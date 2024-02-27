@@ -16,6 +16,7 @@ import UpdatePWD from './Pages/UpdatePWD';
 
 import Footer from './Components/footer';
 import Header from './Components/header';
+import purpleButton from './Components/purpleButton';
 
 const App: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ const App: React.FC = () => {
               <Route path="productlist" element={<ProductList />} />
               <Route path="productdetail" element={<ProductDetail />} />
               {/* <Route path="productDetail/:id" element={<ProductDetail />} /> */}
+
               {/* Product Edit & Add Pages */}
               <Route path="editproduct" element={<EditProduct />} />
 
