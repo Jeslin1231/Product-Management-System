@@ -1,66 +1,53 @@
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from 'react-router-dom';
 import './App.css';
-import { Counter } from './features/counter/Counter';
-import { Quotes } from './features/quotes/Quotes';
-import logo from './logo.svg';
+import ProductList from './Pages/ProductList';
+import ProductDetail from './Pages/ProductDetail';
+import EditProduct from './Pages/EditProduct';
+import Error from './Pages/Error';
+import ForgetPWD from './Pages/ForgetPWD';
+import Login from './Pages/Login';
+import SignUp from './Pages/SignUp';
+import UpdatePWD from './Pages/UpdatePWD';
 
-const App = () => {
+import Footer from './Components/footer';
+import Header from './Components/header';
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <Quotes />
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://reselect.js.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Reselect
-          </a>
-        </span>
-      </header>
+    <div className="flex flex-col min-h-screen">
+      <Header />
+
+      <div className="flex-grow">
+        <Router>
+          <Routes>
+            <Route path="/" element={<Outlet />}>
+              {/* Product View Pages */}
+              <Route index element={<ProductList />} />
+              <Route path="productlist" element={<ProductList />} />
+              <Route path="productdetail" element={<ProductDetail />} />
+              {/* <Route path="productDetail/:id" element={<ProductDetail />} /> */}
+              {/* Product Edit & Add Pages */}
+              <Route path="editproduct" element={<EditProduct />} />
+
+              {/* Auth Pages */}
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="forgetpwd" element={<ForgetPWD />} />
+              <Route path="updatepwd" element={<UpdatePWD />} />
+
+              {/* Error Page */}
+              <Route path="*" element={<Error />} />
+            </Route>
+          </Routes>
+        </Router>
+      </div>
+
+      <Footer />
     </div>
   );
 };
