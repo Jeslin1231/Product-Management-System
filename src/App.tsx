@@ -16,14 +16,13 @@ import UpdatePWD from './Pages/UpdatePWD';
 
 import Footer from './Components/footer';
 import Header from './Components/header';
-import purpleButton from './Components/purpleButton';
 
 const App: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
 
-      <div className="flex-grow">
+      <div className="h-0 bg-[#F9FAFB] flex-grow ">
         <Router>
           <Routes>
             <Route path="/" element={<Outlet />}>

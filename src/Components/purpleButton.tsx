@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
     <button
       type="button"
       className={` text-${textColor} text-${textSize} font-${fontWeight}
-  px-${paddingx} py-${paddingy} w-${width} 
+  px-${paddingx} py-${paddingy} w-${width}
   hover:drop-shadow-xl hover:bg-${bgHoverColor} rounded`}
       {...props}
       style={{ backgroundColor: bgColor, fontFamily: "'Inter', sans-serif" }}
