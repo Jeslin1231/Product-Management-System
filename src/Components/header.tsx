@@ -22,7 +22,7 @@ const Header: React.FC = () => {
   const signStatus = 'Sign In';
 
   return (
-    <header className="bg-gray-800 text-white w-full sm:h-16 h-[121px] flex items-center">
+    <header className="bg-gray-800 text-white w-full md:h-16 h-[121px] flex items-center">
       <div className=" flex justify-between items-center container mx-auto">
         {/* filter shen search box and cart popup open */}
         {filter && (
@@ -33,16 +33,16 @@ const Header: React.FC = () => {
         )}
 
         {/* name and box */}
-        <div className="sm:flex-row mx-auto sm:m-0 z-30 justify-center flex flex-col sm:justify-between sm:space-x-16 ">
+        <div className="md:flex-row mx-auto md:m-0 z-30 justify-center flex flex-col md:justify-between md:space-x-16 ">
           {/* company name */}
-          <div className="hidden sm:flex items-end">
+          <div className="hidden md:flex items-end">
             <div className="font-bold text-[28px] ">Management</div>
             <div className="after:content-['Chuwa'] after:text-xs after:ml-2 after: mb-1 after: font-bold">
               {' '}
             </div>
           </div>
           {/* phone size */}
-          <div className="flex justify-between sm:hidden mb-6">
+          <div className="flex justify-between md:hidden mb-6">
             <svg
               width="58"
               height="18"
@@ -121,7 +121,7 @@ const Header: React.FC = () => {
                 placeholder="Search"
                 onFocus={openSearchDropDown}
                 // onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-gray-800 px-2 py-3 sm:w-[528px] w-[326px] sm:h-[48px] h-[46px] border border-gray-500 rounded focus:outline-none pr-8"
+                className="text-gray-800 px-2 py-3 md:w-[528px] w-[326px] md:h-[48px] h-[46px] border border-gray-500 rounded focus:outline-none pr-8"
               />
 
               {isSearchOpen && <SearchDropDown />}
@@ -145,7 +145,7 @@ const Header: React.FC = () => {
         </div>
 
         {/* user profile  & cart */}
-        <div className="hidden sm:flex space-x-10 z-30">
+        <div className="hidden md:flex space-x-10 z-30">
           <div className="flex items-center  space-x-3">
             <svg
               width="30"

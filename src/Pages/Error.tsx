@@ -4,9 +4,9 @@ import Button from '../Components/PrimaryButton';
 
 const Error = () => {
   return (
-    <div className="flex items-center justify-center sm:w-[1323px] sm:h-[713px] h-full bg-white flex-grow sm:m-auto sm:mt-[81px]">
-      <div className="flex-col flex items-center sm:space-y-6 space-y-5">
-        <div className="sm:block hidden">
+    <div className="flex items-center justify-center md:w-[1323px] md:h-[713px] h-full bg-white flex-grow md:m-auto md:mt-[81px]">
+      <div className="flex-col flex items-center md:space-y-6 space-y-5">
+        <div className="md:block hidden">
           <svg
             width="100"
             height="100"
@@ -21,7 +21,7 @@ const Error = () => {
           </svg>
         </div>
 
-        <div className="sm:hidden block ">
+        <div className="md:hidden block ">
           <svg
             width="60"
             height="60"
@@ -36,13 +36,13 @@ const Error = () => {
           </svg>
         </div>
 
-        <div className="flex flex-col items-center sm:space-y-10 space-y-5">
-          <div className="sm:text-[32px] text-[16px] font-bold ">
+        <div className="flex flex-col items-center md:space-y-10 space-y-5">
+          <div className="md:text-[32px] text-[16px] font-bold ">
             Oops, something went wrong!
           </div>
 
           <Link to={'/'}>
-            <div className="sm:block hidden">
+            <div className="md:block hidden">
               <Button
                 textSize="[15px]"
                 fontWeight="bold"
@@ -53,7 +53,7 @@ const Error = () => {
               </Button>
             </div>
 
-            <div className="sm:hidden block">
+            <div className="md:hidden block">
               <Button
                 textSize="[12px]"
                 fontWeight="bold"

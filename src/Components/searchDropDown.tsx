@@ -9,7 +9,7 @@ const SearchDropDown: React.FC = () => {
 
   return (
     <div>
-      <div className=" absolute z-20 mt-2 sm:w-[528px] w-[326px] rounded-md shadow-lg">
+      <div className=" absolute z-20 mt-2 md:w-[528px] w-[326px] rounded-md shadow-lg">
         <div className="rounded-md bg-white shadow-xs">
           <div className="py-1">
             {options.map((option, index) => (
