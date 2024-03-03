@@ -13,7 +13,10 @@ interface InputGroupProps {
 const InputGroup: React.FC<InputGroupProps> = props => {
   return (
     <div>
-      <label htmlFor={props.for} className="text-lg text-gray-500 pb-1.5">
+      <label
+        htmlFor={props.for}
+        className="text-sm md:text-lg text-gray-500 pb-1.5"
+      >
         {props.label}
       </label>
       <input
@@ -21,7 +24,7 @@ const InputGroup: React.FC<InputGroupProps> = props => {
         id={props.id}
         value={props.value}
         onChange={props.onChange}
-        className="border border-gray-300 h-12 w-full rounded-sm focus:border-blue-600 block p-2.5 text-gray-700"
+        className="border border-gray-300 h-10 md:h-12 w-full rounded-sm focus:border-blue-600 block p-1 md:p-2.5 text-gray-700"
         placeholder={props.placeholder}
       />
     </div>
