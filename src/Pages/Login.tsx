@@ -20,6 +20,7 @@ const Login: React.FC = () => {
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="email@example.com"
+            valid={true}
           />
           <InputGroup
             for="password"
@@ -29,6 +30,7 @@ const Login: React.FC = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
             placeholder="password"
+            valid={true}
           />
           <PurpleButton onClick={() => console.log('Login')} paddingy="3">
             Login

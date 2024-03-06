@@ -23,6 +23,7 @@ const ForgetPWD: React.FC = () => {
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="email@example.com"
+            valid={true}
           />
           <PurpleButton onClick={() => setFlag(true)} paddingy="3">
             Update Password
