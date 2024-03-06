@@ -5,7 +5,7 @@ import InputGroup from '../Components/inputGroup';
 import PurpleButton from '../Components/purpleButton';
 import { Link } from 'react-router-dom';
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -71,4 +71,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default SignUp;
