@@ -2,7 +2,7 @@ import type React from 'react';
 import { Link } from 'react-router-dom';
 
 interface FormProps {
-  title: string;
+  title?: string;
   children?: React.ReactNode;
 }
 
@@ -14,9 +14,11 @@ const Form: React.FC<FormProps> = props => {
           &#x2715;
         </Link>
       </div>
-      <h1 className="font-sans font-bold text-lg md:text-3xl text-center pt-0 md:pt-2 pb-1.5 md:pb-5">
-        {props.title}
-      </h1>
+      {props.title && (
+        <h1 className="font-sans font-bold text-lg md:text-3xl text-center pt-0 md:pt-2 pb-1.5 md:pb-5">
+          {props.title}
+        </h1>
+      )}
       {props.children}
     </div>
   );
