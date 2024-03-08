@@ -1,16 +1,16 @@
 import {
+  Outlet,
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
-  Outlet,
 } from 'react-router-dom';
 import './App.css';
-import ProductList from './Pages/ProductList';
-import ProductDetail from './Pages/ProductDetail';
 import EditProduct from './Pages/EditProduct';
 import Error from './Pages/Error';
 import ForgetPWD from './Pages/ForgetPWD';
 import Login from './Pages/Login';
+import ProductDetail from './Pages/ProductDetail';
+import ProductList from './Pages/ProductList';
 import SignUp from './Pages/SignUp';
 import UpdatePWD from './Pages/UpdatePWD';
 
@@ -21,8 +21,7 @@ const App: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-
-      <div className="h-0 bg-[#F9FAFB] flex-grow ">
+      <div className="flex flex-grow min-h-full bg-[#F9FAFB]">
         <Router>
           <Routes>
             <Route path="/" element={<Outlet />}>
@@ -47,7 +46,6 @@ const App: React.FC = () => {
           </Routes>
         </Router>
       </div>
-
       <Footer />
     </div>
   );
