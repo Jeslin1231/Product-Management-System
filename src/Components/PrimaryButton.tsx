@@ -1,6 +1,6 @@
 // components/Button.tsx
-import type { ButtonHTMLAttributes } from 'react';
 import type React from 'react';
+import type { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   width?: string;

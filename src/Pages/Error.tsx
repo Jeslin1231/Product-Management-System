@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../Components/purpleButton';
+import Button from '../Components/PrimaryButton';
 
 const Error = () => {
   return (

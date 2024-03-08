@@ -2,7 +2,7 @@ import type React from 'react';
 import { useState } from 'react';
 import Form from '../Components/form';
 import InputGroup from '../Components/inputGroup';
-import PurpleButton from '../Components/purpleButton';
+import PrimaryButton from '../Components/PrimaryButton';
 
 const ForgetPWD: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -25,9 +25,9 @@ const ForgetPWD: React.FC = () => {
             placeholder="email@example.com"
             valid={true}
           />
-          <PurpleButton onClick={() => setFlag(true)} paddingy="3">
+          <PrimaryButton onClick={() => setFlag(true)} paddingy="3">
             Update Password
-          </PurpleButton>
+          </PrimaryButton>
         </div>
       </Form>
     );

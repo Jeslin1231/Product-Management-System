@@ -2,7 +2,7 @@ import type React from 'react';
 import { useState } from 'react';
 import Form from '../Components/form';
 import InputGroup from '../Components/inputGroup';
-import PurpleButton from '../Components/purpleButton';
+import PrimaryButton from '../Components/PrimaryButton';
 import { Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
@@ -32,9 +32,9 @@ const Login: React.FC = () => {
             placeholder="password"
             valid={true}
           />
-          <PurpleButton onClick={() => console.log('Login')} paddingy="3">
+          <PrimaryButton onClick={() => console.log('Login')} paddingy="3">
             Login
-          </PurpleButton>
+          </PrimaryButton>
           <div className="flex flex-col md:flex-row items-center md:justify-between">
             <p className="text-gray-500 text-sm">
               Don't have an account?

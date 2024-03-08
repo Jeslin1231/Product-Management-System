@@ -2,7 +2,7 @@ import type React from 'react';
 import { useState } from 'react';
 import Form from '../Components/form';
 import InputGroup from '../Components/inputGroup';
-import PurpleButton from '../Components/purpleButton';
+import PrimaryButton from '../Components/PrimaryButton';
 import { Link } from 'react-router-dom';
 
 const SignUp: React.FC = () => {
@@ -54,9 +54,9 @@ const SignUp: React.FC = () => {
             placeholder="password"
             valid={validPassword}
           />
-          <PurpleButton onClick={handleSignUp} paddingy="3">
+          <PrimaryButton onClick={handleSignUp} paddingy="3">
             Create account
-          </PurpleButton>
+          </PrimaryButton>
           <div className="flex flex-col md:flex-row items-center md:justify-between">
             <p className="text-gray-500 text-sm">
               Already have an account?
