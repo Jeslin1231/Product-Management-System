@@ -1,15 +1,15 @@
 import type React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import PrimaryButton from '../Components/PrimaryButton';
 import Form from '../Components/form';
 import InputGroup from '../Components/inputGroup';
-import PrimaryButton from '../Components/PrimaryButton';
-import { Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <div className="flex h-full justify-center">
+    <div className="flex w-screen justify-center">
       <Form title="Sign in to your account">
         <div className="flex flex-col w-3/4 h-3/4 justify-around">
           <InputGroup
