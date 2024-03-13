@@ -12,6 +12,8 @@ import { mockCustomerLoginApi, mockVendorLoginApi } from '../utils/mock';
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [inputType, setInputType] = useState('password');
+  const [text, setText] = useState('show');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -31,6 +33,22 @@ const Login: React.FC = () => {
       });
   };
 
+  const showPasswordButton = (
+    <button
+      className="absolute right-2 top-2.5 text-gray-500 underline"
+      onClick={() => {
+        if (inputType === 'password') {
+          setText('hide');
+          setInputType('text');
+        } else {
+          setText('show');
+          setInputType('password');
+        }
+      }}
+    >
+      {text}
+    </button>
+  );
   return (
     <div className="flex w-screen justify-center">
       <Form title="Sign in to your account">
@@ -48,12 +66,13 @@ const Login: React.FC = () => {
           <InputGroup
             for="password"
             label="Password"
-            type="password"
+            type={inputType}
             id="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             placeholder="password"
             valid={true}
+            show={showPasswordButton}
           />
           <PrimaryButton onClick={handleLogin} paddingy="3">
             Login

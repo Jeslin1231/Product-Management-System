@@ -9,6 +9,7 @@ interface InputGroupProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   valid: boolean;
+  show?: React.ReactNode;
 }
 
 const InputGroup: React.FC<InputGroupProps> = props => {
@@ -26,14 +27,17 @@ const InputGroup: React.FC<InputGroupProps> = props => {
       >
         {props.label}
       </label>
-      <input
-        type={props.type}
-        id={props.id}
-        value={props.value}
-        onChange={props.onChange}
-        className={`border ${borderColor} h-10 md:h-12 w-full rounded-sm focus:border-blue-600 block p-1 md:p-2.5 text-gray-700`}
-        placeholder={props.placeholder}
-      />
+      <div className="relative">
+        <input
+          type={props.type}
+          id={props.id}
+          value={props.value}
+          onChange={props.onChange}
+          className={`border ${borderColor} h-10 md:h-12 w-full rounded-sm focus:border-blue-600 block p-1 md:p-2.5 text-gray-700`}
+          placeholder={props.placeholder}
+        />
+        {props.show}
+      </div>
       {hint}
     </div>
   );
