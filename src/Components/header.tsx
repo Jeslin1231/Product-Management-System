@@ -1,37 +1,49 @@
 // components/Header.tsx
 import type React from 'react';
 import { useState, useRef, useEffect } from 'react';
+import SearchDropDown from './searchDropDown';
+import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [total, setTotal] = useState('0.00');
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const searchRef = useRef<HTMLDivElement | null>(null);
+  const [filter, setFilter] = useState(false);
 
   const openSearchDropDown = () => {
     setIsSearchOpen(true);
+    setFilter(true);
   };
 
   const closeSearchDropDown = () => {
     setIsSearchOpen(false);
+    setFilter(false);
   };
 
   const signStatus = 'Sign In';
 
   return (
-    <header className="bg-gray-800 text-white w-full sm:h-16 h-[121px] flex items-center">
+    <header className="bg-gray-800 text-white w-full md:h-16 h-[121px] flex items-center">
       <div className=" flex justify-between items-center container mx-auto">
+        {/* filter shen search box and cart popup open */}
+        {filter && (
+          <div
+            className="fixed top-0  left-0 w-full h-full ] bg-[#00000099] z-10"
+            onClick={closeSearchDropDown}
+          ></div>
+        )}
+
         {/* name and box */}
-        <div className="sm:flex-row mx-auto sm:m-0 justify-center flex flex-col sm:justify-between sm:space-x-16 ">
+        <div className="md:flex-row mx-auto md:m-0 z-30 justify-center flex flex-col md:justify-between md:space-x-16 ">
           {/* company name */}
-          <div className="hidden sm:flex items-end">
+          <div className="hidden md:flex items-end">
             <div className="font-bold text-[28px] ">Management</div>
             <div className="after:content-['Chuwa'] after:text-xs after:ml-2 after: mb-1 after: font-bold">
               {' '}
             </div>
           </div>
           {/* phone size */}
-          <div className="flex justify-between sm:hidden mb-6">
+          <div className="flex justify-between md:hidden mb-6">
             <svg
               width="58"
               height="18"
@@ -102,6 +114,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* search box */}
+
           <div className="relative flex items-center">
             <div>
               <input
@@ -109,42 +122,10 @@ const Header: React.FC = () => {
                 placeholder="Search"
                 onFocus={openSearchDropDown}
                 // onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-gray-800 px-2 py-3 sm:w-[528px] w-[326px] sm:h-[48px] h-[46px] border border-gray-500 rounded focus:outline-none pr-8"
+                className="text-gray-800 px-2 py-3 md:w-[528px] w-[326px] md:h-[48px] h-[46px] border border-gray-500 rounded focus:outline-none pr-8"
               />
 
-              {isSearchOpen && (
-                <div className=" absolute z-100 mt-2 sm:w-[528px] w-[326px] rounded-md shadow-lg">
-                  <div className="rounded-md bg-white z-100 shadow-xs">
-                    <div className="py-1">
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        选项1
-                      </a>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        选项2
-                      </a>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        选项3
-                      </a>
-
-                      <div
-                        className="cursor-pointer text-black"
-                        onClick={closeSearchDropDown}
-                      >
-                        close
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {isSearchOpen && <SearchDropDown />}
             </div>
 
             <div className="absolute right-2">
@@ -165,7 +146,7 @@ const Header: React.FC = () => {
         </div>
 
         {/* user profile  & cart */}
-        <div className="hidden sm:flex space-x-10">
+        <div className="hidden md:flex space-x-10 z-30">
           <div className="flex items-center  space-x-3">
             <svg
               width="30"
@@ -188,7 +169,10 @@ const Header: React.FC = () => {
               />
             </svg>
 
-            <div className="font-semibold">{signStatus}</div>
+            <div className="font-semibold">
+              {/* {signStatus} */}
+              <Link to={'/login'}>{signStatus}</Link>
+            </div>
           </div>
 
           <div className="flex items-center space-x-3">

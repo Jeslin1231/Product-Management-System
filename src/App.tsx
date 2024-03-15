@@ -20,30 +20,35 @@ import Header from './Components/header';
 const App: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      <div className="flex flex-grow min-h-full bg-[#F9FAFB]">
+      <div className="flex flex-col flex-grow">
         <Router>
-          <Routes>
-            <Route path="/" element={<Outlet />}>
-              {/* Product View Pages */}
-              <Route index element={<ProductList />} />
-              <Route path="productlist" element={<ProductList />} />
-              <Route path="productdetail" element={<ProductDetail />} />
-              {/* <Route path="productDetail/:id" element={<ProductDetail />} /> */}
+          <Header />
+          <div className="flex flex-grow bg-[#F9FAFB]">
+            <Routes>
+              <Route path="/" element={<Outlet />}>
+                {/* Product View Pages */}
+                <Route index element={<ProductList />} />
+                <Route path="productlist" element={<ProductList />} />
+                <Route path="productdetail" element={<ProductDetail />}>
+                  <Route path="productDetail/:id" element={<ProductDetail />} />
+                </Route>
 
-              {/* Product Edit & Add Pages */}
-              <Route path="editproduct" element={<EditProduct />} />
+                {/* Product Edit & Add Pages */}
+                <Route path="editproduct" element={<EditProduct />}>
+                  <Route path="editProduct/:id" element={<EditProduct />} />
+                </Route>
 
-              {/* Auth Pages */}
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<SignUp />} />
-              <Route path="forgetpwd" element={<ForgetPWD />} />
-              <Route path="updatepwd" element={<UpdatePWD />} />
+                {/* Auth Pages */}
+                <Route path="login" element={<Login />} />
+                <Route path="signup" element={<SignUp />} />
+                <Route path="forgetpwd" element={<ForgetPWD />} />
+                <Route path="updatepwd" element={<UpdatePWD />} />
 
-              {/* Error Page */}
-              <Route path="*" element={<Error />} />
-            </Route>
-          </Routes>
+                {/* Error Page */}
+                <Route path="*" element={<Error />} />
+              </Route>
+            </Routes>
+          </div>
         </Router>
       </div>
       <Footer />

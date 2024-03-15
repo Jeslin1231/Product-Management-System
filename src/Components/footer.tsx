@@ -3,13 +3,13 @@ import type React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-800 text-white w-full flex justify-center py-8 h-[152px] sm:h-[85px]">
-      <div className="container flex flex-col justify-between items-center sm:flex-row">
-        <div className="sm:order-1 order-3">
+    <footer className="bg-gray-800 text-white w-full flex justify-center py-8 h-[152px] md:h-[85px]">
+      <div className="container flex flex-col justify-between items-center md:flex-row">
+        <div className="md:order-1 order-3">
           <p>&copy; 2022 All Rights reserved.</p>
         </div>
 
-        <div className="order-1 sm:order-2 flex space-x-4">
+        <div className="order-1 md:order-2 flex space-x-4">
           <a href="https://www.youtube.com/">
             <svg
               width="23"
@@ -55,7 +55,7 @@ const Footer: React.FC = () => {
           </a>
         </div>
 
-        <div className="sm:order-3 order-2 flex space-x-8">
+        <div className="md:order-3 order-2 flex space-x-8">
           <div>Contact us</div>
           <div>Privacy Policies</div>
           <div>Help</div>
