@@ -170,6 +170,7 @@ const Header: React.FC = () => {
             </svg>
 
             <div className="font-semibold">
+              {/* {signStatus} */}
               <Link to={'/login'}>{signStatus}</Link>
             </div>
           </div>

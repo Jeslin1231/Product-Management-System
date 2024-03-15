@@ -4,7 +4,7 @@ import Button from '../Components/PrimaryButton';
 
 const Error = () => {
   return (
-    <div className="flex items-center justify-center md:w-[1323px] bg-white flex-grow md:m-auto md:my-[81px] ">
+    <div className="flex items-center justify-center md:mx-[64px] bg-white flex-grow md:m-auto md:my-[81px] ">
       <div className="flex-col flex items-center md:space-y-6 space-y-5">
         <div className="md:block hidden">
           <svg
