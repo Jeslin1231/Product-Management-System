@@ -2,6 +2,7 @@
 import type React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from './searchDropDown';
+import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [total, setTotal] = useState('0.00');
@@ -168,7 +169,9 @@ const Header: React.FC = () => {
               />
             </svg>
 
-            <div className="font-semibold">{signStatus}</div>
+            <div className="font-semibold">
+              <Link to={'/login'}>{signStatus}</Link>
+            </div>
           </div>
 
           <div className="flex items-center space-x-3">

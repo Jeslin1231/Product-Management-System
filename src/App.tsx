@@ -20,19 +20,22 @@ import Header from './Components/header';
 const App: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      <div className="flex flex-grow min-h-full bg-[#F9FAFB]">
+      <div className="flex flex-col flex-grow min-h-full bg-[#F9FAFB]">
         <Router>
+          <Header />
           <Routes>
             <Route path="/" element={<Outlet />}>
               {/* Product View Pages */}
               <Route index element={<ProductList />} />
               <Route path="productlist" element={<ProductList />} />
-              <Route path="productdetail" element={<ProductDetail />} />
-              {/* <Route path="productDetail/:id" element={<ProductDetail />} /> */}
+              <Route path="productdetail" element={<ProductDetail />}>
+                <Route path="productDetail/:id" element={<ProductDetail />} />
+              </Route>
 
               {/* Product Edit & Add Pages */}
-              <Route path="editproduct" element={<EditProduct />} />
+              <Route path="editproduct" element={<EditProduct />}>
+                <Route path="editProduct/:id" element={<EditProduct />} />
+              </Route>
 
               {/* Auth Pages */}
               <Route path="login" element={<Login />} />
