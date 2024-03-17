@@ -7,6 +7,7 @@ export interface UserSliceState {
   email: string;
   role: 'customer' | 'vendor' | 'none';
   logged: boolean;
+  token?: string;
 }
 
 const initialState: UserSliceState = {

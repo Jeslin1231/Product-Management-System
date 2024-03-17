@@ -27,6 +27,7 @@ const Login: React.FC = () => {
           email: data.email,
           name: data.name,
           role: data.role,
+          token: data.token,
         };
         dispatch(login(user));
         navigate('/productlist');
