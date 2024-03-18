@@ -31,7 +31,7 @@ const SignUp: React.FC = () => {
     }
   };
   return (
-    <div className="flex h-full justify-center">
+    <div className="flex w-screen justify-center">
       <Form title="Sign up an account">
         <div className="flex flex-col w-3/4 h-3/4 justify-around">
           <InputGroup
