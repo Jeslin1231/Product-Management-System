@@ -31,17 +31,12 @@ const App: React.FC = () => {
                   {/* Product View Pages */}
                   <Route index element={<ProductList />} />
                   <Route path="productlist" element={<ProductList />} />
-                  <Route path="productdetail" element={<ProductDetail />}>
-                    <Route
-                      path="productDetail/:id"
-                      element={<ProductDetail />}
-                    />
-                  </Route>
+                  {/* <Route path="productdetail" element={<ProductDetail />} /> */}
+                  <Route path="productDetail/:id" element={<ProductDetail />} />
 
                   {/* Product Edit & Add Pages */}
-                  <Route path="editproduct" element={<EditProduct />}>
-                    <Route path="editProduct/:id" element={<EditProduct />} />
-                  </Route>
+                  <Route path="createProduct" element={<EditProduct />} />
+                  <Route path="editProduct/:id" element={<EditProduct />} />
 
                   {/* Auth Pages */}
                   <Route path="login" element={<Login />} />
