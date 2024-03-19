@@ -16,37 +16,40 @@ import UpdatePWD from './Pages/UpdatePWD';
 
 import Footer from './Components/footer';
 import Header from './Components/header';
+import ErrorBoundary from './Components/errorBoundary';
 
 const App: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-col flex-grow">
         <Router>
-          <Header />
-          <div className="flex flex-grow bg-[#F9FAFB]">
-            <Routes>
-              <Route path="/" element={<Outlet />}>
-                {/* Product View Pages */}
-                <Route index element={<ProductList />} />
-                <Route path="productlist" element={<ProductList />} />
-                {/* <Route path="productdetail" element={<ProductDetail />} /> */}
-                <Route path="productDetail/:id" element={<ProductDetail />} />
+          <ErrorBoundary>
+            <Header />
+            <div className="flex flex-grow bg-[#F9FAFB]">
+              <Routes>
+                <Route path="/" element={<Outlet />}>
+                  {/* Product View Pages */}
+                  <Route index element={<ProductList />} />
+                  <Route path="productlist" element={<ProductList />} />
+                  {/* <Route path="productdetail" element={<ProductDetail />} /> */}
+                  <Route path="productDetail/:id" element={<ProductDetail />} />
 
-                {/* Product Edit & Add Pages */}
-                <Route path="createProduct" element={<EditProduct />} />
-                <Route path="editProduct/:id" element={<EditProduct />} />
+                  {/* Product Edit & Add Pages */}
+                  <Route path="createProduct" element={<EditProduct />} />
+                  <Route path="editProduct/:id" element={<EditProduct />} />
 
-                {/* Auth Pages */}
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<SignUp />} />
-                <Route path="forgetpwd" element={<ForgetPWD />} />
-                <Route path="updatepwd" element={<UpdatePWD />} />
+                  {/* Auth Pages */}
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<SignUp />} />
+                  <Route path="forgetpwd" element={<ForgetPWD />} />
+                  <Route path="updatepwd" element={<UpdatePWD />} />
 
-                {/* Error Page */}
-                <Route path="*" element={<Error />} />
-              </Route>
-            </Routes>
-          </div>
+                  {/* Error Page */}
+                  <Route path="*" element={<Error />} />
+                </Route>
+              </Routes>
+            </div>
+          </ErrorBoundary>
         </Router>
       </div>
       <Footer />
