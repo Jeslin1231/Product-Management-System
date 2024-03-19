@@ -43,24 +43,18 @@ const Error = () => {
 
           <Link to={'/'}>
             <div className="md:block hidden">
-              <Button
-                textSize="[15px]"
-                fontWeight="bold"
-                paddingx="[85px]"
-                paddingy="3"
-              >
-                Go Home
+              <Button>
+                <p className="py-2 px-24 text-white text-sm font-semibold">
+                  Go Home
+                </p>
               </Button>
             </div>
 
             <div className="md:hidden block">
-              <Button
-                textSize="[12px]"
-                fontWeight="bold"
-                width="[133px]"
-                paddingy="3"
-              >
-                Go Home
+              <Button>
+                <p className="py-1 px-4 text-white text-sm font-semibold">
+                  Go Home
+                </p>
               </Button>
             </div>
           </Link>

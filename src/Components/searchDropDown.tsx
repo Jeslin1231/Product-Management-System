@@ -1,7 +1,5 @@
 // components/PopupDropdown.tsx
-import { dividerClasses } from '@mui/material';
 import type React from 'react';
-import { useState } from 'react';
 
 const SearchDropDown: React.FC = () => {
   // match search words

@@ -1,14 +1,16 @@
 // components/Header.tsx
 import type React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import SearchDropDown from './searchDropDown';
 import { Link } from 'react-router-dom';
+import Cart from './cart';
 
 const Header: React.FC = () => {
   const [total, setTotal] = useState('0.00');
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [filter, setFilter] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const openSearchDropDown = () => {
     setIsSearchOpen(true);
@@ -20,16 +22,32 @@ const Header: React.FC = () => {
     setFilter(false);
   };
 
+  const openCart = () => {
+    setIsCartOpen(true);
+    setFilter(true);
+  };
+
+  const closeCart = () => {
+    setIsCartOpen(false);
+    setFilter(false);
+  };
+
+  const closeCartandSearch = () => {
+    setIsSearchOpen(false);
+    setIsCartOpen(false);
+    setFilter(false);
+  };
+
   const signStatus = 'Sign In';
 
   return (
-    <header className="bg-gray-800 text-white w-full md:h-16 h-[121px] flex items-center">
-      <div className=" flex justify-between items-center container mx-auto">
+    <header className="bg-gray-800 text-white w-full md:h-16 h-[121px] flex py-4 flex-col md:flex-row items-center">
+      <div className=" flex justify-between items-center container mx-auto ">
         {/* filter shen search box and cart popup open */}
         {filter && (
           <div
             className="fixed top-0  left-0 w-full h-full ] bg-[#00000099] z-10"
-            onClick={closeSearchDropDown}
+            onClick={closeCartandSearch}
           ></div>
         )}
 
@@ -57,7 +75,8 @@ const Header: React.FC = () => {
               />
             </svg>
 
-            <div className="flex space-x-4">
+            <div className="flex space-x-4" onClick={openCart}>
+              {/* phone size cart */}
               <svg
                 width="24"
                 height="24"
@@ -143,10 +162,12 @@ const Header: React.FC = () => {
               </svg>
             </div>
           </div>
+          {/* cart popup */}
+          {/* {isCartOpen && <Cart onClose={closeCart} />} */}
         </div>
 
         {/* user profile  & cart */}
-        <div className="hidden md:flex space-x-10 z-30">
+        <div className="hidden md:flex space-x-10 z-10">
           <div className="flex items-center  space-x-3">
             <svg
               width="30"
@@ -175,7 +196,7 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3" onClick={openCart}>
             <svg
               width="30"
               height="30"
@@ -201,6 +222,8 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* cart popup */}
+      {isCartOpen && <Cart onClose={closeCart} />}
     </header>
   );
 };
