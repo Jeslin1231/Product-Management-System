@@ -1,37 +1,45 @@
 import type React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PrimaryButton from '../Components/PrimaryButton';
 import Form from '../Components/form';
 import InputGroup from '../Components/inputGroup';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../app/hooks';
-import type { UserPayload } from '../features/users/UserSlice';
-import { login } from '../features/users/UserSlice';
-import { mockCustomerLoginApi, mockVendorLoginApi } from '../utils/mock';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import {
+  resetRequestStatus,
+  selectRequestStatus,
+} from '../features/users/UserSlice';
+import { loginUser } from '../features/users/UserThunkApi';
+import { selectUserStatus } from '../features/users/UserSlice';
 
 const Login: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const loggedIn = useAppSelector(selectUserStatus);
+  useEffect(() => {
+    if (loggedIn) {
+      navigate('/productlist');
+    }
+  }, [loggedIn, navigate]);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [inputType, setInputType] = useState('password');
   const [text, setText] = useState('show');
 
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const loading = useAppSelector(selectRequestStatus);
+
+  if (loading === 'pending') {
+    return <div>Login...</div>;
+  }
+
+  if (loading === 'rejected') {
+    return navigate('/error');
+  }
 
   const handleLogin = () => {
-    mockVendorLoginApi(email, password)
-      .then(res => res.json())
-      .then(data => {
-        const user: UserPayload = {
-          id: data.id,
-          email: data.email,
-          name: data.name,
-          role: data.role,
-          token: data.token,
-        };
-        dispatch(login(user));
-        navigate('/productlist');
-      });
+    dispatch(loginUser({ email: email, password: password }));
   };
 
   const showPasswordButton = (
@@ -51,7 +59,7 @@ const Login: React.FC = () => {
     </button>
   );
   return (
-    <div className="flex w-screen justify-center">
+    <div className="flex flex-grow justify-center">
       <Form title="Sign in to your account">
         <div className="flex flex-col w-3/4 h-3/4 justify-around">
           <InputGroup

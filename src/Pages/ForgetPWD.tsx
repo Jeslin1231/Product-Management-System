@@ -54,7 +54,7 @@ const ForgetPWD: React.FC = () => {
       </Form>
     );
   }
-  return <div className="flex w-screen justify-center">{form}</div>;
+  return <div className="flex flex-grow justify-center">{form}</div>;
 };
 
 export default ForgetPWD;
