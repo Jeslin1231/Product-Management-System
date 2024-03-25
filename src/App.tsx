@@ -17,6 +17,7 @@ import UpdatePWD from './Pages/UpdatePWD';
 import Footer from './Components/footer';
 import Header from './Components/header';
 import ErrorBoundary from './Components/errorBoundary';
+import ProtectedRoute from './Components/protectedRoute';
 
 const App: React.FC = () => {
   return (
@@ -31,12 +32,27 @@ const App: React.FC = () => {
                   {/* Product View Pages */}
                   <Route index element={<ProductList />} />
                   <Route path="productlist" element={<ProductList />} />
-                  {/* <Route path="productdetail" element={<ProductDetail />} /> */}
                   <Route path="productDetail/:id" element={<ProductDetail />} />
 
                   {/* Product Edit & Add Pages */}
-                  <Route path="createProduct" element={<EditProduct />} />
-                  <Route path="editProduct/:id" element={<EditProduct />} />
+                  <Route
+                    path="createProduct"
+                    element={
+                      <ProtectedRoute
+                        path="createProduct"
+                        element={<EditProduct />}
+                      />
+                    }
+                  />
+                  <Route
+                    path="editProduct/:id"
+                    element={
+                      <ProtectedRoute
+                        path="editProduct/id"
+                        element={<EditProduct />}
+                      />
+                    }
+                  />
 
                   {/* Auth Pages */}
                   <Route path="login" element={<Login />} />

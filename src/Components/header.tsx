@@ -4,13 +4,33 @@ import { useState } from 'react';
 import SearchDropDown from './searchDropDown';
 import { Link } from 'react-router-dom';
 import Cart from './cart';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { logout, selectUserCartNumber } from '../features/users/UserSlice';
+import {
+  selectUserStatus,
+  selectUserTotalCost,
+} from '../features/users/UserSlice';
+import { useNavigate } from 'react-router-dom';
+import { debounce } from '../utils/function-utils';
 
 const Header: React.FC = () => {
-  const [total, setTotal] = useState('0.00');
+  const total = useAppSelector(selectUserTotalCost);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [filter, setFilter] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const signStatus = useAppSelector(selectUserStatus);
+  const cartItem = useAppSelector(selectUserCartNumber);
+  const cartNumberidsplay = cartItem > 0 && signStatus ? 'flex' : 'none';
+
+  const logUserOut = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
 
   const openSearchDropDown = () => {
     setIsSearchOpen(true);
@@ -23,8 +43,13 @@ const Header: React.FC = () => {
   };
 
   const openCart = () => {
-    setIsCartOpen(true);
-    setFilter(true);
+    if (signStatus) {
+      setIsCartOpen(true);
+      setFilter(true);
+    } else {
+      alert('Sign In To See Your Cart');
+      navigate('/login');
+    }
   };
 
   const closeCart = () => {
@@ -38,8 +63,19 @@ const Header: React.FC = () => {
     setFilter(false);
   };
 
-  const signStatus = 'Sign In';
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTermDisplay, setSearchTermDisplay] = useState('');
+  const debouncedSearch = debounce((term: string) => {
+    // debounce the search term
+    setSearchTerm(term);
+  }, 1000);
 
+  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTermDisplay(e.target.value);
+    debouncedSearch(e.target.value);
+  };
+
+  // console.log("s",searchTerm)
   return (
     <header className="bg-gray-800 text-white w-full md:h-16 h-[121px] flex py-4 flex-col md:flex-row items-center">
       <div className=" flex justify-between items-center container mx-auto ">
@@ -75,37 +111,63 @@ const Header: React.FC = () => {
               />
             </svg>
 
-            <div className="flex space-x-4" onClick={openCart}>
+            <div className="flex space-x-4">
               {/* phone size cart */}
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              <div
+                className="tooltip tooltip-bottom"
+                data-tip="Click to Log In or Log Out"
+                onClick={logUserOut}
               >
-                <g clipPath="url(#clip0_21114_127)">
-                  <path
-                    d="M16.5 22.5H15V18.75C14.9988 17.7558 14.6033 16.8027 13.9003 16.0997C13.1973 15.3967 12.2442 15.0012 11.25 15H6.75C5.7558 15.0012 4.80267 15.3967 4.09966 16.0997C3.39666 16.8027 3.00119 17.7558 3 18.75V22.5H1.5V18.75C1.50159 17.3581 2.05522 16.0237 3.03944 15.0394C4.02367 14.0552 5.3581 13.5016 6.75 13.5H11.25C12.6419 13.5016 13.9763 14.0552 14.9606 15.0394C15.9448 16.0237 16.4984 17.3581 16.5 18.75V22.5Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M9 3C9.74168 3 10.4667 3.21993 11.0834 3.63199C11.7001 4.04404 12.1807 4.62971 12.4646 5.31494C12.7484 6.00016 12.8226 6.75416 12.6779 7.48159C12.5333 8.20902 12.1761 8.8772 11.6517 9.40165C11.1272 9.9261 10.459 10.2833 9.73159 10.4279C9.00416 10.5726 8.25016 10.4984 7.56494 10.2145C6.87972 9.93072 6.29405 9.45007 5.88199 8.83339C5.46994 8.2167 5.25 7.49168 5.25 6.75C5.25 5.75544 5.64509 4.80161 6.34835 4.09835C7.05161 3.39509 8.00544 3 9 3ZM9 1.5C7.96165 1.5 6.94662 1.80791 6.08326 2.38478C5.2199 2.96166 4.54699 3.7816 4.14963 4.74091C3.75227 5.70022 3.64831 6.75582 3.85088 7.77422C4.05345 8.79262 4.55347 9.72808 5.28769 10.4623C6.02192 11.1965 6.95738 11.6966 7.97578 11.8991C8.99418 12.1017 10.0498 11.9977 11.0091 11.6004C11.9684 11.203 12.7883 10.5301 13.3652 9.66674C13.9421 8.80339 14.25 7.78835 14.25 6.75C14.25 5.35761 13.6969 4.02226 12.7123 3.03769C11.7277 2.05312 10.3924 1.5 9 1.5Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M17.5 14.5L19.2523 17.8L23 18.2554L20.25 20.7337L20.8 24.4L17.5 22.3375L14.2 24.4L14.75 20.7337L12 18.2554L15.85 17.8L17.5 14.5Z"
-                    fill="#FCE944"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_21114_127">
-                    <rect width="24" height="24" fill="white" />
-                  </clipPath>
-                </defs>
-              </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clipPath="url(#clip0_21114_127)">
+                    <path
+                      d="M16.5 22.5H15V18.75C14.9988 17.7558 14.6033 16.8027 13.9003 16.0997C13.1973 15.3967 12.2442 15.0012 11.25 15H6.75C5.7558 15.0012 4.80267 15.3967 4.09966 16.0997C3.39666 16.8027 3.00119 17.7558 3 18.75V22.5H1.5V18.75C1.50159 17.3581 2.05522 16.0237 3.03944 15.0394C4.02367 14.0552 5.3581 13.5016 6.75 13.5H11.25C12.6419 13.5016 13.9763 14.0552 14.9606 15.0394C15.9448 16.0237 16.4984 17.3581 16.5 18.75V22.5Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M9 3C9.74168 3 10.4667 3.21993 11.0834 3.63199C11.7001 4.04404 12.1807 4.62971 12.4646 5.31494C12.7484 6.00016 12.8226 6.75416 12.6779 7.48159C12.5333 8.20902 12.1761 8.8772 11.6517 9.40165C11.1272 9.9261 10.459 10.2833 9.73159 10.4279C9.00416 10.5726 8.25016 10.4984 7.56494 10.2145C6.87972 9.93072 6.29405 9.45007 5.88199 8.83339C5.46994 8.2167 5.25 7.49168 5.25 6.75C5.25 5.75544 5.64509 4.80161 6.34835 4.09835C7.05161 3.39509 8.00544 3 9 3ZM9 1.5C7.96165 1.5 6.94662 1.80791 6.08326 2.38478C5.2199 2.96166 4.54699 3.7816 4.14963 4.74091C3.75227 5.70022 3.64831 6.75582 3.85088 7.77422C4.05345 8.79262 4.55347 9.72808 5.28769 10.4623C6.02192 11.1965 6.95738 11.6966 7.97578 11.8991C8.99418 12.1017 10.0498 11.9977 11.0091 11.6004C11.9684 11.203 12.7883 10.5301 13.3652 9.66674C13.9421 8.80339 14.25 7.78835 14.25 6.75C14.25 5.35761 13.6969 4.02226 12.7123 3.03769C11.7277 2.05312 10.3924 1.5 9 1.5Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M17.5 14.5L19.2523 17.8L23 18.2554L20.25 20.7337L20.8 24.4L17.5 22.3375L14.2 24.4L14.75 20.7337L12 18.2554L15.85 17.8L17.5 14.5Z"
+                      fill="#FCE944"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_21114_127">
+                      <rect width="24" height="24" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
 
-              <div className="flex text-[10px] space-x-1.5 items-center">
+              <div
+                className="flex text-[12px] space-x-1.5 items-center relative font-semibold"
+                onClick={openCart}
+              >
+                <div
+                  style={{
+                    position: 'absolute',
+                    display: `${cartNumberidsplay}`,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    top: 0,
+                    left: 0,
+                    height: '18px',
+                    minWidth: '18px',
+                    borderRadius: '50%',
+                    backgroundColor: 'red',
+                    color: 'white',
+                  }}
+                >
+                  {cartItem}
+                </div>
                 <svg
                   width="24"
                   height="24"
@@ -133,18 +195,18 @@ const Header: React.FC = () => {
           </div>
 
           {/* search box */}
-
           <div className="relative flex items-center">
             <div>
               <input
                 type="text"
                 placeholder="Search"
                 onFocus={openSearchDropDown}
-                // onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearchTermChange}
+                value={searchTermDisplay}
                 className="text-gray-800 px-2 py-3 md:w-[528px] w-[326px] md:h-[48px] h-[46px] border border-gray-500 rounded focus:outline-none pr-8"
               />
 
-              {isSearchOpen && <SearchDropDown />}
+              {isSearchOpen && <SearchDropDown searchTerm={searchTerm} />}
             </div>
 
             <div className="absolute right-2">
@@ -191,12 +253,48 @@ const Header: React.FC = () => {
             </svg>
 
             <div className="font-semibold">
-              {/* {signStatus} */}
-              <Link to={'/login'}>{signStatus}</Link>
+              {signStatus ? (
+                <div
+                  className="cursor-pointer hover:text-violet-300 tooltip tooltip-bottom"
+                  data-tip="Click to Log Out"
+                  onClick={logUserOut}
+                >
+                  Sign Out
+                </div>
+              ) : (
+                <Link
+                  className="hover:text-violet-300 tooltip tooltip-bottom"
+                  data-tip="Click to Log In"
+                  to={'/login'}
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
-
-          <div className="flex items-center space-x-3" onClick={openCart}>
+          {/* before:absolute before:-translate-y-1/2 before:text-center before:block before:h-[20px] before:min-w-[20px] before:px-1 before:rounded-full before:bg-red-500 */}
+          <div
+            className="flex items-center space-x-3 cursor-pointer font-semibold relative"
+            onClick={openCart}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                display: `${cartNumberidsplay}`,
+                justifyContent: 'center',
+                alignItems: 'center',
+                top: 0,
+                left: 0,
+                height: '20px',
+                minWidth: '20px',
+                borderRadius: '50%',
+                backgroundColor: 'red',
+                color: 'white',
+                fontSize: '14px',
+              }}
+            >
+              {cartItem}
+            </div>
             <svg
               width="30"
               height="30"
@@ -218,7 +316,7 @@ const Header: React.FC = () => {
               />
             </svg>
 
-            <div className="font-semibold">${total}</div>
+            <div>${total}</div>
           </div>
         </div>
       </div>

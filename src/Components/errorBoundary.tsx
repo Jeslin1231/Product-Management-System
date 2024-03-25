@@ -12,6 +12,7 @@ const ErrorBoundary: React.FC<{ children: React.ReactNode }> = ({
     const handleError = () => {
       console.error('ErrorBoundary caught an error');
       setHasError(true);
+      navigate('/error');
     };
 
     window.addEventListener('error', handleError);
@@ -19,7 +20,7 @@ const ErrorBoundary: React.FC<{ children: React.ReactNode }> = ({
     return () => {
       window.removeEventListener('error', handleError);
     };
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     if (hasError) {
