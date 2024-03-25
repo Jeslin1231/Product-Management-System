@@ -1,8 +1,20 @@
 // components/PopupDropdown.tsx
 import type React from 'react';
 import Button from './PrimaryButton';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  selectToken,
+  selectUserCartNumber,
+  selectUserTotalCost,
+} from '../features/users/UserSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { get, post } from '../utils/network';
+import {
+  decreaseProduct,
+  increaseProduct,
+  removeProduct,
+} from '../features/users/UserThunkApi';
 
 interface CartProps {
   onClose: () => void; // Define the type of onClose prop
@@ -16,88 +28,95 @@ interface Item {
   price: number;
 }
 
+const transformDataToItem = (data: any): Item => {
+  return {
+    id: data.product._id,
+    name: data.product.name,
+    image: data.product.imgUrl,
+    quantity: data.quantity,
+    price: data.product.price,
+  };
+};
+
 const Cart: React.FC<CartProps> = ({ onClose }) => {
   // match search words
-  const [items, setItems] = useState<Item[]>([
-    {
-      id: 1,
-      name: 'Product 1',
-      image: 'https://avatars.githubusercontent.com/u/1?v=4',
-      quantity: 2,
-      price: 10.99,
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      image: 'https://avatars.githubusercontent.com/u/2?v=4',
-      quantity: 1,
-      price: 19.99,
-    },
-    {
-      id: 3,
-      name: 'Product 3',
-      image: 'https://avatars.githubusercontent.com/u/6?v=4',
-      quantity: 3,
-      price: 7.5,
-    },
-    {
-      id: 4,
-      name: 'Product 4',
-      image: 'https://avatars.githubusercontent.com/u/6?v=4',
-      quantity: 3,
-      price: 7.5,
-    },
-    {
-      id: 5,
-      name: 'Product 5',
-      image: 'https://avatars.githubusercontent.com/u/6?v=4',
-      quantity: 3,
-      price: 7.5,
-    },
-  ]);
+  const [items, setItems] = useState<Item[]>([]);
 
-  const itemsNumber = items.reduce((total, item) => total + item.quantity, 0);
+  const token = useAppSelector(selectToken);
+  const dispatch = useAppDispatch();
+
+  const itemsNumber = useAppSelector(selectUserCartNumber);
+
+  useEffect(() => {
+    const getCart = async () => {
+      try {
+        const response = await get('http://localhost:3000/user/get_cart', {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        const data = await response.json();
+        const items = data.map(transformDataToItem);
+        // console.log(data);
+        setItems(items);
+      } catch (error) {
+        console.error('Error:', error);
+        throw new Error('Request failed');
+      }
+    };
+
+    if (itemsNumber > 0) {
+      getCart();
+    }
+  }, [setItems, token, itemsNumber]);
+
+  // console.log(items[2])
 
   const decrementQuantity = (itemId: number) => {
-    setItems(prevItems =>
-      prevItems.map(item =>
-        item.id === itemId
-          ? { ...item, quantity: Math.max(item.quantity - 1, 1) }
-          : item,
-      ),
-    );
+    dispatch(decreaseProduct({ id: itemId, token: token }));
   };
 
   const incrementQuantity = (itemId: number) => {
-    setItems(prevItems =>
-      prevItems.map(item =>
-        item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item,
-      ),
-    );
+    dispatch(increaseProduct({ id: itemId, token: token }));
   };
 
   const removeItem = (itemId: number) => {
-    setItems(prevItems => prevItems.filter(item => item.id !== itemId));
+    dispatch(removeProduct({ id: itemId, token: token }));
   };
 
-  const summary = [
-    {
-      name: 'Subtotal',
-      num: 120,
-    },
-    {
-      name: 'Discount',
-      num: -20,
-    },
-    {
-      name: 'Tax',
-      num: 10,
-    },
-    {
-      name: 'Estimated Total',
-      num: 110,
-    },
-  ];
+  // cart summary variable
+  const total = useAppSelector(selectUserTotalCost);
+  const totalDisplay = total.toFixed(2);
+  const [discount, setdiscount] = useState<number>(0);
+  const discountDisplay = discount.toFixed(2);
+  const tax = total * 0.0775;
+  const taxDisplay = tax.toFixed(2);
+  const estimatedTotal = (total - discount + tax).toFixed(2);
+
+  const [discountCode, setDiscountCode] = useState<string>('');
+  const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDiscountCode(e.target.value);
+  };
+
+  const hanldeDiscountApply = () => {
+    const digits = discountCode.match(/\d+/g);
+
+    if (digits) {
+      const number = parseInt(digits.join(''), 10);
+      if (number > total) {
+        alert('Discount code cannot be greater than total price');
+        return;
+      } else {
+        setdiscount(number);
+      }
+    } else {
+      alert('Invalid discount code');
+    }
+  };
 
   return (
     // <div>
@@ -112,7 +131,12 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
         </button>
       </div>
 
-      <div className="sm:px-8 px-4 sm:py-8 py-4 flex-col overflow-scroll">
+      <div className="sm:px-8 px-4 sm:py-8 py-4 flex-col overflow-scroll text-black">
+        {itemsNumber === 0 ? (
+          <div className="text-[16px] font-[600]">
+            Your cart is empty, choose something you like ^_^
+          </div>
+        ) : null}
         <div>
           {items.map(item => (
             <div key={item.id} className="flex gap-8 sm:mb-10 mb-6 ">
@@ -175,8 +199,10 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
               className="w-full border border-gray rounded-md h-[48px] p-2"
               type="text"
               placeholder="20 OFF"
+              onChange={handleDiscountChange}
+              value={discountCode}
             />
-            <Button>
+            <Button onClick={hanldeDiscountApply}>
               <p className="py-1 px-3 text-white text-sm font-semibold">
                 Apply
               </p>
@@ -188,14 +214,22 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
 
         {/* cart summary */}
         <div className="flex-col gap-4 w-full text-black text-[16px] font-[600]">
-          {summary.map(item => (
-            <div>
-              <div className="flex mb-2">
-                <div className="w-11/12">{item.name}</div>
-                <div>${item.num}</div>
-              </div>
-            </div>
-          ))}
+          <div className="flex mb-2">
+            <div className="w-11/12">Subtotal</div>
+            <div>${totalDisplay}</div>
+          </div>
+          <div className="flex mb-2">
+            <div className="w-11/12">Tax</div>
+            <div>${taxDisplay}</div>
+          </div>
+          <div className="flex mb-2">
+            <div className="w-11/12">Discount</div>
+            <div>-${discountDisplay}</div>
+          </div>
+          <div className="flex mb-2">
+            <div className="w-11/12">Estimated total</div>
+            <div>${estimatedTotal}</div>
+          </div>
 
           <div className="mt-4 w-full">
             <Button width="full">
