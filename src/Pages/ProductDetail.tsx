@@ -52,22 +52,25 @@ const ProductDetail: React.FC = () => {
   useEffect(() => {
     const getCart = async () => {
       try {
-        const response = await get('http://localhost:3000/user/get_cart', {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-auth-token': token,
+        const response = await get(
+          'http://localhost:3000/user/get_cart_basic',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'x-auth-token': token,
+            },
           },
-        });
+        );
         if (!response.ok) {
           throw new Error('Request failed');
         }
         const data = await response.json();
         // console.log(data);
-
-        let collectionID = data.map((item: any) => item.product._id);
-
+        let collectionID = data.map((item: any) => item.product);
+        // console.log(collectionID)
         if (collectionID.includes(id)) {
-          let item = data.find((item: any) => item.product._id === id);
+          let item = data.find((item: any) => item.product === id);
+          // console.log(item);
           setQuant(item.quantity);
         } else {
           setQuant(0);
@@ -85,10 +88,10 @@ const ProductDetail: React.FC = () => {
 
   const decrementQuantity = (itemId: number) => {
     if (quant === 1) {
-      console.log('r');
+      // console.log('r');
       dispatch(removeProduct({ id: itemId, token: token }));
     } else if (quant > 1) {
-      console.log('d');
+      // console.log('d');
       dispatch(decreaseProduct({ id: itemId, token: token }));
     } else {
       alert('Error');
