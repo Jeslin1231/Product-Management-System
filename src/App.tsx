@@ -18,6 +18,7 @@ import Footer from './Components/footer';
 import Header from './Components/header';
 import ErrorBoundary from './Components/errorBoundary';
 import ProtectedRoute from './Components/protectedRoute';
+import ProtectedRouteEdit from './Components/protectedRouteEdit';
 
 const App: React.FC = () => {
   return (
@@ -47,8 +48,8 @@ const App: React.FC = () => {
                   <Route
                     path="editProduct/:id"
                     element={
-                      <ProtectedRoute
-                        path="editProduct/id"
+                      <ProtectedRouteEdit
+                        path="editProduct/:id"
                         element={<EditProduct />}
                       />
                     }

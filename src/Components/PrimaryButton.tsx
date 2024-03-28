@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
       type="button"
       className={` text-${textColor} text-${textSize} font-${fontWeight}
   px-${paddingx} py-${paddingy} w-${width}
-  hover:drop-shadow-xl hover:bg-${bgHoverColor} rounded`}
+  hover:drop-shadow-xl hover:bg-${bgHoverColor} rounded-md`}
       {...props}
       style={{ backgroundColor: bgColor, fontFamily: "'Inter', sans-serif" }}
     />

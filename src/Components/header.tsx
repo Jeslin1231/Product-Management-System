@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { debounce } from '../utils/function-utils';
 
 const Header: React.FC = () => {
-  const total = useAppSelector(selectUserTotalCost);
+  const total = useAppSelector(selectUserTotalCost).toFixed(2);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [filter, setFilter] = useState(false);
