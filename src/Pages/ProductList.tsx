@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import logo from '../logo.svg';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import {
   selectUser,
@@ -79,6 +78,14 @@ const ProductList = () => {
       dispatch(decreaseProduct({ id: itemId, token: token }));
     } else {
       alert('Error');
+    }
+  };
+
+  const increaseQuantity = (itemId: number) => {
+    if (user.logged) {
+      dispatch(increaseProduct({ id: itemId, token: token }));
+    } else {
+      alert('Please log in to add to cart');
     }
   };
 
@@ -247,9 +254,7 @@ const ProductList = () => {
               {!product.number ? (
                 <button
                   className="flex-1 bg-[#5048E5] rounded text-white text-md mr-1 py-0.5 hover:shadow-lg "
-                  onClick={() =>
-                    dispatch(increaseProduct({ id: product._id, token: token }))
-                  }
+                  onClick={() => increaseQuantity(product._id)}
                 >
                   Add
                 </button>
@@ -264,13 +269,7 @@ const ProductList = () => {
                     -{' '}
                   </button>
                   <span> {product.number}</span>
-                  <button
-                    onClick={() =>
-                      dispatch(
-                        increaseProduct({ id: product._id, token: token }),
-                      )
-                    }
-                  >
+                  <button onClick={() => increaseQuantity(product._id)}>
                     {' '}
                     +{' '}
                   </button>
