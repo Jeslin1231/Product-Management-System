@@ -11,17 +11,29 @@ enum Category {
   category2 = 'Category 2',
   category3 = 'Category 3',
 }
+
+interface Product {
+  _id?: string;
+  description: string;
+  name: string;
+  price: number;
+  imgUrl: string;
+  category: Category;
+  stock: number;
+}
+
 const EditProduct: React.FC = () => {
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
   const param = useParams();
-  const [product, setProduct] = useState({
+
+  const [product, setProduct] = useState<Product>({
     name: '',
     description: '',
     category: Category.category1,
-    price: '',
-    stock: '',
+    price: 0,
     imgUrl: '',
+    stock: 0,
   });
   if (!user.logged) {
     navigate('/login');
@@ -126,6 +138,7 @@ const EditProduct: React.FC = () => {
               Price
             </label>
             <input
+              type="number"
               name="price"
               value={product.price}
               onChange={e => setProduct({ ...product, price: e.target.value })}
@@ -140,6 +153,7 @@ const EditProduct: React.FC = () => {
               In Stock Quantity
             </label>
             <input
+              type="number"
               name="stock"
               value={product.stock}
               onChange={e => setProduct({ ...product, stock: e.target.value })}
@@ -201,6 +215,12 @@ const EditProduct: React.FC = () => {
         <div className="w-5/6 flex flex-row justify-center sm:justify-start">
           <PrimaryButton
             onClick={async () => {
+              if (!product.stock || !product.price) {
+                return;
+              } else if (product.stock < 0 || product.price < 0) {
+                alert('Stock and Price must be greater than 0');
+                return;
+              }
               try {
                 if (product._id) {
                   console.log(product);
