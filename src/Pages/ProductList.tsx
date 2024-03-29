@@ -1,16 +1,26 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import logo from '../logo.svg';
-import { useAppSelector } from '../app/hooks';
-import { selectUser } from '../features/users/UserSlice';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import {
+  selectUser,
+  selectToken,
+  selectUserCartNumber,
+} from '../features/users/UserSlice';
 import { useNavigate } from 'react-router-dom';
 import { get } from '../utils/network';
+import {
+  decreaseProduct,
+  increaseProduct,
+  removeProduct,
+} from '../features/users/UserThunkApi';
 
 interface Product {
-  id: string;
+  _id: any;
   vendor: string;
   name: string;
   price: number;
-  imageUrl: string;
+  imgUrl: string;
+  number: number; // used for items in loggedin user's cart
 }
 
 interface ProductListState {
@@ -30,17 +40,27 @@ const ProductList = () => {
 
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
   const [productList, setProductList] = useState<ProductListState>({
     products: [],
     count: 0,
   });
+
+  const [productLogInList, setProductLogInList] = useState<ProductListState>({
+    products: [],
+    count: 0,
+  });
+  let List;
   const [currentPage, setCurrentPage] = useState(1);
   const [sortType, setSortType] = useState(0);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const loading = useMemo(
-    () => (productList.count === 0 ? 'pedding' : 'done'),
+    () => (productList.count === 0 ? 'pending' : 'done'),
     [productList],
   );
+
+  const itemsNumber = useAppSelector(selectUserCartNumber);
+  const token = useAppSelector(selectToken);
 
   const handleAddProduct = () => {
     navigate('/createProduct');
@@ -50,91 +70,112 @@ const ProductList = () => {
     navigate(`/editProduct/${id}`);
   };
 
+  const decrementQuantity = (itemId: number, quant: number) => {
+    if (quant === 1) {
+      // console.log('r');
+      dispatch(removeProduct({ id: itemId, token: token }));
+    } else if (quant > 1) {
+      // console.log('d');
+      dispatch(decreaseProduct({ id: itemId, token: token }));
+    } else {
+      alert('Error');
+    }
+  };
+
+  const modifyList = (prevProductList: ProductListState, collection: any) => ({
+    ...prevProductList,
+    products: prevProductList.products.map(product => {
+      const matchedProduct = collection.find(
+        (item: any) => item.product === product._id,
+      );
+      if (matchedProduct) {
+        return {
+          ...product,
+          number: matchedProduct.quantity, // Add number property to product
+        };
+      }
+      return product;
+    }),
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       let count = 0;
-      if (!user.logged || (user.logged && user.role === 'customer')) {
-        try {
-          const res = await get(
-            'http://localhost:3000/product/get_products_count',
-          );
-          if (res.ok) {
-            const data = await res.json();
-            count = data.count;
-          } else {
-            navigate('/error');
-          }
-        } catch (error) {
+      try {
+        const res = await get(
+          'http://localhost:3000/product/get_products_count',
+        );
+        if (res.ok) {
+          const data = await res.json();
+          count = data.count;
+        } else {
           navigate('/error');
         }
+      } catch (error) {
+        navigate('/error');
+      }
 
-        try {
-          const res = await get(
-            `http://localhost:3000/product/get_products?page=${currentPage}&limit=${perPage.current}&sort=${sortType}`,
-          );
-          if (res.ok) {
-            const data = await res.json();
-            setProductList({
-              products: data.results,
-              count,
-            });
-          } else {
-            navigate('/error');
-          }
-        } catch (error) {
+      try {
+        const res = await get(
+          `http://localhost:3000/product/get_products?page=${currentPage}&limit=${perPage.current}&sort=${sortType}`,
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setProductList({
+            products: data.results,
+            count,
+          });
+        } else {
           navigate('/error');
         }
-      } else if (user.logged && user.role === 'vendor') {
-        try {
-          const res = await get(
-            'http://localhost:3000/product/get_vendor_products_count',
-            {
-              headers: {
-                'x-auth-token': user.token,
-              },
-            },
-          );
-          if (res.ok) {
-            const data = await res.json();
-            count = data.count;
-          } else if (res.status === 401) {
-            navigate('/login');
-          } else {
-            navigate('/error');
-          }
-        } catch (error) {
-          navigate('/error');
-        }
-        try {
-          const res = await get(
-            `http://localhost:3000/product/get_vendor_products/?page=${currentPage}&limit=${perPage.current}&sort=${sortType}`,
-            {
-              headers: {
-                'x-auth-token': user.token,
-              },
-            },
-          );
-          if (res.ok) {
-            const data = await res.json();
-            setProductList({
-              products: data.results,
-              count,
-            });
-          } else if (res.status === 401) {
-            navigate('/login');
-          } else {
-            navigate('/error');
-          }
-        } catch (error) {
-          navigate('/error');
-        }
+      } catch (error) {
+        navigate('/error');
       }
     };
 
     fetchData();
   }, [user, navigate, currentPage, sortType]);
 
-  if (loading === 'pedding') {
+  useEffect(() => {
+    const getCart = async () => {
+      try {
+        const response = await get(
+          'http://localhost:3000/user/get_cart_basic',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'x-auth-token': token,
+            },
+          },
+        );
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        const data = await response.json();
+        // console.log(data);
+        const collection = data.map((item: any) => ({
+          product: item.product,
+          quantity: item.quantity,
+        }));
+        setProductLogInList(modifyList(productList, collection));
+      } catch (error) {
+        console.error('Error:', error);
+        throw new Error('Request failed');
+      }
+    };
+
+    if (user.logged && itemsNumber > 0) {
+      getCart();
+    }
+  }, [token, itemsNumber, productList, user.logged]);
+
+  if (user.logged && itemsNumber > 0) {
+    List = productLogInList;
+  } else {
+    List = productList;
+  }
+
+  if (loading === 'pending') {
     return (
       <div className="flex flex-col items-center justify-center h-full">
         <p className="text-black text-2xl font-bold">Loading...</p>
@@ -187,30 +228,60 @@ const ProductList = () => {
         </div>
       </header>
       <div className="flex flex-col md:grid md:grid-cols-5 flex-grow w-11/12 mt-5 bg-white rounded-md">
-        {productList.products.map((product, index) => (
+        {List.products.map((product, index) => (
           <div
             key={index}
             className="flex flex-col min-h-60 border m-2 border-gray-100"
           >
             <img
-              src={product.imageUrl}
+              src={product.imgUrl}
               alt={product.name}
-              className="flex-grow"
+              className="flex-grow cursor-pointer"
+              onClick={() => navigate(`/productDetail/${product._id}`)}
             />
             <p className="text-gray-500 text-sm px-1 py-0.5">{product.name}</p>
             <p className="text-black text-xl font-bold px-1 py-0.5">
               ${product.price}
             </p>
             <div className="flex justify-between w-full mb-5 px-1">
-              <button className="flex-1 bg-blue-700 rounded text-white text-md mr-1 py-0.5">
-                Add
-              </button>
+              {!product.number ? (
+                <button
+                  className="flex-1 bg-[#5048E5] rounded text-white text-md mr-1 py-0.5 hover:shadow-lg "
+                  onClick={() =>
+                    dispatch(increaseProduct({ id: product._id, token: token }))
+                  }
+                >
+                  Add
+                </button>
+              ) : (
+                <div className="mr-1 py-0.5 text-white flex flex-1 gap-3 items-center justify-around rounded bg-[#5048E5]">
+                  <button
+                    onClick={() =>
+                      decrementQuantity(product._id, product.number)
+                    }
+                  >
+                    {' '}
+                    -{' '}
+                  </button>
+                  <span> {product.number}</span>
+                  <button
+                    onClick={() =>
+                      dispatch(
+                        increaseProduct({ id: product._id, token: token }),
+                      )
+                    }
+                  >
+                    {' '}
+                    +{' '}
+                  </button>
+                </div>
+              )}
               {user.logged &&
                 user.role === 'vendor' &&
                 user.id === product.vendor && (
                   <button
-                    className="w-5/12 text-black text-md border-gray-200 border py-0.5"
-                    onClick={handleEditProduct(product.id)}
+                    className="w-5/12 text-black text-md border-gray-200 border py-0.5 hover:shadow-lg rounded"
+                    onClick={handleEditProduct(product._id)}
                   >
                     Edit
                   </button>

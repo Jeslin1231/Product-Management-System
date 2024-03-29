@@ -27,6 +27,10 @@ const Header: React.FC = () => {
   const cartItem = useAppSelector(selectUserCartNumber);
   const cartNumberidsplay = cartItem > 0 && signStatus ? 'flex' : 'none';
 
+  const toHome = () => {
+    navigate('/');
+  };
+
   const logUserOut = () => {
     dispatch(logout());
     navigate('/login');
@@ -90,14 +94,17 @@ const Header: React.FC = () => {
         {/* name and box */}
         <div className="md:flex-row mx-auto md:m-0 z-30 justify-center flex flex-col md:justify-between md:space-x-16 ">
           {/* company name */}
-          <div className="hidden md:flex items-end">
+          <div
+            className="hidden md:flex items-end cursor-pointer"
+            onClick={toHome}
+          >
             <div className="font-bold text-[28px] ">Management</div>
             <div className="after:content-['Chuwa'] after:text-xs after:ml-2 after: mb-1 after: font-bold">
               {' '}
             </div>
           </div>
           {/* phone size */}
-          <div className="flex justify-between md:hidden mb-6">
+          <div className="flex justify-between md:hidden mb-6" onClick={toHome}>
             <svg
               width="58"
               height="18"

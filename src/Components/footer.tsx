@@ -3,7 +3,7 @@ import type React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-800 text-white w-full flex justify-center py-8 h-[152px] md:h-[85px]">
+    <footer className="bg-gray-800 z-50 text-white w-full flex justify-center py-8 h-[152px] md:h-[85px]">
       <div className="container flex flex-col justify-between items-center md:flex-row">
         <div className="md:order-1 order-3">
           <p>&copy; 2022 All Rights reserved.</p>

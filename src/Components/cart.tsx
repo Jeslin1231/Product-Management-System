@@ -1,7 +1,7 @@
 // components/PopupDropdown.tsx
 import type React from 'react';
 import Button from './PrimaryButton';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   selectToken,
@@ -9,7 +9,7 @@ import {
   selectUserTotalCost,
 } from '../features/users/UserSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { get, post } from '../utils/network';
+import { get } from '../utils/network';
 import {
   decreaseProduct,
   increaseProduct,
@@ -119,8 +119,7 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
   };
 
   return (
-    // <div>
-    <div className="flex flex-col sm:max-h-[80vh] max-h-[calc(100vh-121px-152px)] sm:absolute z-40 sm:top-0 sm:right-0 sm:mt-0 mt-2 sm:w-[544px] w-full  bg-white ">
+    <div className="flex flex-col sm:max-h-[80vh] max-h-[70vh] sm:absolute z-40 sm:top-0 sm:right-0 sm:mt-0 mt-2 sm:w-[544px] w-full  bg-white ">
       <div className="sm:px-8 px-4 flex items-center justify-between bg-[#5048E5] sm:h-[81px] py-5">
         <div className="flex gap-2 items-center">
           <div className="sm:text-[32px] text-[24px] font-bold">Cart</div>
@@ -241,7 +240,6 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
         </div>
       </div>
     </div>
-    // </div>
   );
 };
 

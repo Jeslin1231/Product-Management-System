@@ -160,7 +160,7 @@ const ProductDetail: React.FC = () => {
               )}
 
               {user.id === product.vendor && (
-                <Link to={`/editProduct/${id}`}>
+                <Link to={`/editProduct/${product._id}`}>
                   <button className="flex bg-white text-black py-3 w-[135px] rounded-md border-2 border-gray-200 hover:drop-shadow-lg justify-center font-semibold">
                     Edit
                   </button>
