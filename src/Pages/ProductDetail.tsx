@@ -98,6 +98,14 @@ const ProductDetail: React.FC = () => {
     }
   };
 
+  const increaseQuantity = (itemId: number) => {
+    if (user.logged) {
+      dispatch(increaseProduct({ id: itemId, token: token }));
+    } else {
+      alert('Please log in to add to cart');
+    }
+  };
+
   return (
     <div className="flex flex-grow justify-center">
       <div className="flex bg-white my-10 mx-6">
@@ -132,11 +140,7 @@ const ProductDetail: React.FC = () => {
             {/* 2 buttons */}
             <div className="flex gap-6 text-sm">
               {quant === 0 ? (
-                <PrimaryButton
-                  onClick={() =>
-                    dispatch(increaseProduct({ id: product._id, token: token }))
-                  }
-                >
+                <PrimaryButton onClick={() => increaseQuantity(product._id)}>
                   <p className="px-3 py-2">Add To Cart</p>
                 </PrimaryButton>
               ) : (
@@ -146,13 +150,7 @@ const ProductDetail: React.FC = () => {
                     -{' '}
                   </button>
                   <span> {quant}</span>
-                  <button
-                    onClick={() =>
-                      dispatch(
-                        increaseProduct({ id: product._id, token: token }),
-                      )
-                    }
-                  >
+                  <button onClick={() => increaseQuantity(product._id)}>
                     {' '}
                     +{' '}
                   </button>
