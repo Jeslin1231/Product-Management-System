@@ -135,59 +135,62 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
           <div className="text-[16px] font-[600]">
             Your cart is empty, choose something you like ^_^
           </div>
-        ) : null}
-        <div>
-          {items.map(item => (
-            <div key={item.id} className="flex gap-8 sm:mb-10 mb-6 ">
-              <img
-                className="h-[120px] w-[112px]"
-                src={item.image}
-                alt={item.name}
-              />
+        ) : (
+          <div>
+            {items.map(item => (
+              <div key={item.id} className="flex gap-8 sm:mb-10 mb-6 ">
+                <img
+                  className="h-[120px] w-[112px]"
+                  src={item.image}
+                  alt={item.name}
+                />
 
-              {/* RIGHT PART */}
-              <div className="flex-col w-full h-[120px]">
-                {/* NAME AND PRICE */}
-                <div className="flex h-4/5 sm:flex-row flex-col sm:justify-between sm:text-[20px] text-[16px]">
-                  {/* name */}
-                  <div className=" text-black font-bold " onClick={onClose}>
-                    <Link to={`/productDetail/${item.id}`}>{item.name}</Link>
+                {/* RIGHT PART */}
+                <div className="flex-col w-full h-[120px]">
+                  {/* NAME AND PRICE */}
+                  <div className="flex h-4/5 sm:flex-row flex-col sm:justify-between sm:text-[20px] text-[16px]">
+                    {/* name */}
+                    <div className=" text-black font-bold " onClick={onClose}>
+                      <Link to={`/productDetail/${item.id}`}>{item.name}</Link>
+                    </div>
+
+                    {/* price */}
+                    <div className="text-[#5048E5] font-[600]">
+                      ${item.price}
+                    </div>
                   </div>
 
-                  {/* price */}
-                  <div className="text-[#5048E5] font-[600]">${item.price}</div>
-                </div>
+                  {/* QUANTITY CONTROL */}
+                  <div className="flex justify-between text-gray-500 ">
+                    <div className="border border-gray rounded-md">
+                      <button
+                        className="px-2 border-r "
+                        onClick={() => decrementQuantity(item.id)}
+                        disabled={item.quantity === 1}
+                      >
+                        -
+                      </button>
+                      <span className="px-2 text-black">{item.quantity}</span>
+                      <button
+                        className="px-2 border-l "
+                        onClick={() => incrementQuantity(item.id)}
+                      >
+                        +
+                      </button>
+                    </div>
 
-                {/* QUANTITY CONTROL */}
-                <div className="flex justify-between text-gray-500 ">
-                  <div className="border border-gray rounded-md">
                     <button
-                      className="px-2 border-r "
-                      onClick={() => decrementQuantity(item.id)}
-                      disabled={item.quantity === 1}
+                      className="underline"
+                      onClick={() => removeItem(item.id)}
                     >
-                      -
-                    </button>
-                    <span className="px-2 text-black">{item.quantity}</span>
-                    <button
-                      className="px-2 border-l "
-                      onClick={() => incrementQuantity(item.id)}
-                    >
-                      +
+                      Remove
                     </button>
                   </div>
-
-                  <button
-                    className="underline"
-                    onClick={() => removeItem(item.id)}
-                  >
-                    Remove
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* coupon */}
         <div className="text-gray-400 text-[14px] font-[600]">
