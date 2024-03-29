@@ -10,7 +10,7 @@ interface Product {
   vendor: string;
   name: string;
   price: number;
-  imageUrl: string;
+  imgUrl: string;
 }
 
 interface ProductListState {
@@ -193,7 +193,7 @@ const ProductList = () => {
             className="flex flex-col min-h-60 border m-2 border-gray-100"
           >
             <img
-              src={product.imageUrl}
+              src={product.imgUrl}
               alt={product.name}
               className="flex-grow"
             />
@@ -210,7 +210,7 @@ const ProductList = () => {
                 user.id === product.vendor && (
                   <button
                     className="w-5/12 text-black text-md border-gray-200 border py-0.5"
-                    onClick={handleEditProduct(product.id)}
+                    onClick={handleEditProduct(product._id)}
                   >
                     Edit
                   </button>
