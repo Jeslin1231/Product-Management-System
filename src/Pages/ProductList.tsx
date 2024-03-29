@@ -7,9 +7,10 @@ import { get } from '../utils/network';
 
 interface Product {
   id: string;
+  vendor: string;
   name: string;
   price: number;
-  image: string;
+  imageUrl: string;
 }
 
 interface ProductListState {
@@ -191,7 +192,11 @@ const ProductList = () => {
             key={index}
             className="flex flex-col min-h-60 border m-2 border-gray-100"
           >
-            <img src={product.image} alt={product.name} className="flex-grow" />
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className="flex-grow"
+            />
             <p className="text-gray-500 text-sm px-1 py-0.5">{product.name}</p>
             <p className="text-black text-xl font-bold px-1 py-0.5">
               ${product.price}
@@ -200,14 +205,16 @@ const ProductList = () => {
               <button className="flex-1 bg-blue-700 rounded text-white text-md mr-1 py-0.5">
                 Add
               </button>
-              {user.logged && user.role === 'vendor' && (
-                <button
-                  className="w-5/12 text-black text-md border-gray-200 border py-0.5"
-                  onClick={handleEditProduct(product.id)}
-                >
-                  Edit
-                </button>
-              )}
+              {user.logged &&
+                user.role === 'vendor' &&
+                user.id === product.vendor && (
+                  <button
+                    className="w-5/12 text-black text-md border-gray-200 border py-0.5"
+                    onClick={handleEditProduct(product.id)}
+                  >
+                    Edit
+                  </button>
+                )}
             </div>
           </div>
         ))}
